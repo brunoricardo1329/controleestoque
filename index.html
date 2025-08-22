@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controle de Estoque - Futurista</title>
+<title>Controle de Estoque</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
@@ -104,7 +104,7 @@ table {
 th, td {
   border: 1px solid #ffeb3b;
   padding: 8px;
-  text-align: center;
+  text-align: left;
   font-size: 0.85rem;
 }
 
@@ -264,29 +264,18 @@ document.getElementById("sendAllBtn").addEventListener("click", ()=>{
     return;
   }
 
-  // Criar tabela HTML para enviar
-  let registrosHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">`;
-  registrosHTML += `<tr>
-<th>PV</th><th>STD</th><th>FL.ORIGEM</th><th>FL.DESTINO</th><th>SKU</th><th>DESCRICAO</th>
-<th>QTD</th><th>CARGA</th><th>STATUS</th><th>NOTA FISCAL</th><th>DATA NF</th>
-<th>ILPN</th><th>DIVERGENCIA</th><th>TIPO_DA_DIVERGENCIA</th><th>AJUSTE_ENTRADA</th>
-<th>AJUSTE_SAIDA</th><th>SOLICITACAO</th><th>ROMANEIO</th><th>REGISTRO_BD</th>
-</tr>`;
-
-  registros.forEach(r=>{
-    registrosHTML += `<tr>`;
-    for(const key of ["PV","STD","FL_ORIGEM","FL_DESTINO","SKU","DESCRICAO","QTD","CARGA",
-                      "STATUS","NOTA_FISCAL","DATA_NF","ILPN","DIVERGENCIA","TIPO_DA_DIVERGENCIA",
-                      "AJUSTE_ENTRADA_NO_MHT","AJUSTE_SAIDA_NO_MHT","SOLICITACAO","ROMANEIO","REGISTRO_BD"]){
-      registrosHTML += `<td>${r[key] || ""}</td>`;
+  // Concatenar todos os registros em um campo
+  let registrosTexto = "";
+  registros.forEach((r,i)=>{
+    registrosTexto += `Registro ${i+1}:\n`;
+    for(const key in r){
+      registrosTexto += `${key}: ${r[key]}\n`;
     }
-    registrosHTML += `</tr>`;
+    registrosTexto += "\n";
   });
 
-  registrosHTML += `</table>`;
-
   const formData = new FormData();
-  formData.append("Registros", registrosHTML);
+  formData.append("Registros", registrosTexto);
 
   fetch('https://formsubmit.co/ajax/triagemlinhabranca@gmail.com', {
     method: 'POST',
