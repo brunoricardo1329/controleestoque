@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Estoque - Futurista</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, #0d47a1, #ff1744);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  min-height: 100vh;
+  margin: 0;
+  color: #fff;
+}
+
+.container {
+  background-color: rgba(0,0,0,0.85);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(255,255,255,0.2);
+  width: 100%;
+  max-width: 1000px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ffeb3b;
+  text-shadow: 0 0 10px #ffeb3b;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: #ffeb3b;
+}
+
+input, select {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.9rem;
+  background: #212121;
+  color: #fff;
+}
+
+input:required, select:required {
+  border: 2px solid #ffeb3b;
+}
+
+button {
+  grid-column: 1 / -1;
+  padding: 15px;
+  font-size: 1.1rem;
+  background: #ff1744;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #f50057;
+  box-shadow: 0 0 15px #f50057;
+}
+
+.message {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.success { color: #4CAF50; }
+.error { color: #FF5252; }
+
+@media(max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Controle de Estoque</h1>
+<form id="estoqueForm">
+  <label>PV<input type="text" name="PV"></label>
+  <label>STD<input type="text" name="STD"></label>
+  <label>FL.ORIGEM<input type="text" name="FL_ORIGEM" required></label>
+  <label>FL.DESTINO<input type="text" name="FL_DESTINO" required></label>
+  <label>SKU<input type="text" name="SKU"></label>
+  <label>DESCRICAO<input type="text" name="DESCRICAO"></label>
+  <label>QTD<input type="number" name="QTD"></label>
+  <label>CARGA<input type="text" name="CARGA"></label>
+  <label>STATUS
+    <select name="STATUS" required>
+      <option value="">Selecione</option>
+      <option value="QEB">QEB</option>
+      <option value="BOA">BOA</option>
+      <option value="SLD">SLD</option>
+    </select>
+  </label>
+  <label>NOTA FISCAL<input type="text" name="NOTA_FISCAL" required></label>
+  <label>DATA NF<input type="date" name="DATA_NF"></label>
+  <label>ILPN<input type="text" name="ILPN"></label>
+  <label>DIVERGENCIA<input type="text" name="DIVERGENCIA"></label>
+  <label>TIPO_DA_DIVERGENCIA<input type="text" name="TIPO_DA_DIVERGENCIA" required></label>
+  <label>AJUSTE_ENTRADA_NO_MHT<input type="text" name="AJUSTE_ENTRADA_NO_MHT"></label>
+  <label>AJUSTE_SAIDA_NO_MHT<input type="text" name="AJUSTE_SAIDA_NO_MHT"></label>
+  <label>SOLICITACAO<input type="text" name="SOLICITACAO"></label>
+  <label>ROMANEIO<input type="text" name="ROMANEIO"></label>
+  <label>REGISTRO_BD<input type="text" name="REGISTRO_BD" required></label>
+
+  <div class="message" id="message"></div>
+  <button type="submit">Enviar Cadastro</button>
+</form>
+</div>
+
+<script>
+const form = document.getElementById('estoqueForm');
+const messageDiv = document.getElementById('message');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  const formData = new FormData(form);
+
+  fetch('https://formsubmit.co/ajax/Bruno.ricardo@viavarejo.com.br', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    messageDiv.textContent = "Cadastro enviado com sucesso!";
+    messageDiv.className = "message success";
+    form.reset();
+  })
+  .catch(err => {
+    messageDiv.textContent = "Erro ao enviar cadastro. Tente novamente.";
+    messageDiv.className = "message error";
+  });
+});
+</script>
+</body>
+</html>
