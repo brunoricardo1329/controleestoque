@@ -3,34 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controle de Estoque</title>
+<title>Controle de Estoque - Futurista</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
 body {
   font-family: 'Orbitron', sans-serif;
   background: linear-gradient(135deg, #0d47a1, #ff1744);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
-  min-height: 100vh;
   margin: 0;
+  padding: 20px;
   color: #fff;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
   background-color: rgba(0,0,0,0.85);
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 30px rgba(255,255,255,0.2);
-  width: 100%;
-  max-width: 1000px;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
   color: #ffeb3b;
   text-shadow: 0 0 10px #ffeb3b;
 }
@@ -38,7 +33,8 @@ h1 {
 form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px 20px;
+  gap: 15px 20px;
+  margin-bottom: 20px;
 }
 
 label {
@@ -49,7 +45,7 @@ label {
 }
 
 input, select {
-  padding: 10px;
+  padding: 8px;
   margin-top: 5px;
   border-radius: 5px;
   border: none;
@@ -64,16 +60,17 @@ input:required, select:required {
 
 button {
   grid-column: 1 / -1;
-  padding: 15px;
-  font-size: 1.1rem;
+  padding: 12px;
+  font-size: 1rem;
   background: #ff1744;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   color: #fff;
   text-transform: uppercase;
   font-weight: bold;
   transition: 0.3s;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -84,81 +81,229 @@ button:hover {
 .message {
   grid-column: 1 / -1;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 10px;
   font-weight: bold;
 }
 
 .success { color: #4CAF50; }
 .error { color: #FF5252; }
 
-@media(max-width: 600px) {
-  form {
-    grid-template-columns: 1fr;
-  }
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+th, td {
+  border: 1px solid #ffeb3b;
+  padding: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+th {
+  background-color: #0d47a1;
+}
+
+td button {
+  padding: 5px 8px;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-btn { background-color: #4CAF50; }
+.edit-btn:hover { background-color: #45a049; }
+
+.delete-btn { background-color: #ff1744; }
+.delete-btn:hover { background-color: #f50057; }
+
+@media(max-width: 600px){
+  form { grid-template-columns: 1fr; }
+  table { font-size: 0.75rem; }
 }
 </style>
 </head>
 <body>
 <div class="container">
-<h1>Controle de Estoque</h1>
-<form id="estoqueForm">
-  <label>PV<input type="text" name="PV"></label>
-  <label>STD<input type="text" name="STD"></label>
-  <label>FL.ORIGEM<input type="text" name="FL_ORIGEM" required></label>
-  <label>FL.DESTINO<input type="text" name="FL_DESTINO" required></label>
-  <label>SKU<input type="text" name="SKU"></label>
-  <label>DESCRICAO<input type="text" name="DESCRICAO"></label>
-  <label>QTD<input type="number" name="QTD"></label>
-  <label>CARGA<input type="text" name="CARGA"></label>
-  <label>STATUS
-    <select name="STATUS" required>
-      <option value="">Selecione</option>
-      <option value="QEB">QEB</option>
-      <option value="BOA">BOA</option>
-      <option value="SLD">SLD</option>
-    </select>
-  </label>
-  <label>NOTA FISCAL<input type="text" name="NOTA_FISCAL" required></label>
-  <label>DATA NF<input type="date" name="DATA_NF"></label>
-  <label>ILPN<input type="text" name="ILPN"></label>
-  <label>DIVERGENCIA<input type="text" name="DIVERGENCIA"></label>
-  <label>TIPO_DA_DIVERGENCIA<input type="text" name="TIPO_DA_DIVERGENCIA" required></label>
-  <label>AJUSTE_ENTRADA_NO_MHT<input type="text" name="AJUSTE_ENTRADA_NO_MHT"></label>
-  <label>AJUSTE_SAIDA_NO_MHT<input type="text" name="AJUSTE_SAIDA_NO_MHT"></label>
-  <label>SOLICITACAO<input type="text" name="SOLICITACAO"></label>
-  <label>ROMANEIO<input type="text" name="ROMANEIO"></label>
-  <label>REGISTRO_BD<input type="text" name="REGISTRO_BD" required></label>
+  <h1>Controle de Estoque</h1>
+  <form id="estoqueForm">
+    <label>PV<input type="text" name="PV"></label>
+    <label>STD<input type="text" name="STD"></label>
+    <label>FL.ORIGEM<input type="text" name="FL_ORIGEM" required></label>
+    <label>FL.DESTINO<input type="text" name="FL_DESTINO" required></label>
+    <label>SKU<input type="text" name="SKU"></label>
+    <label>DESCRICAO<input type="text" name="DESCRICAO"></label>
+    <label>QTD<input type="number" name="QTD"></label>
+    <label>CARGA<input type="text" name="CARGA"></label>
+    <label>STATUS
+      <select name="STATUS" required>
+        <option value="">Selecione</option>
+        <option value="QEB">QEB</option>
+        <option value="BOA">BOA</option>
+        <option value="SLD">SLD</option>
+      </select>
+    </label>
+    <label>NOTA FISCAL<input type="text" name="NOTA_FISCAL" required></label>
+    <label>DATA NF<input type="date" name="DATA_NF"></label>
+    <label>ILPN<input type="text" name="ILPN"></label>
+    <label>DIVERGENCIA<input type="text" name="DIVERGENCIA"></label>
+    <label>TIPO_DA_DIVERGENCIA<input type="text" name="TIPO_DA_DIVERGENCIA" required></label>
+    <label>AJUSTE_ENTRADA_NO_MHT<input type="text" name="AJUSTE_ENTRADA_NO_MHT"></label>
+    <label>AJUSTE_SAIDA_NO_MHT<input type="text" name="AJUSTE_SAIDA_NO_MHT"></label>
+    <label>SOLICITACAO<input type="text" name="SOLICITACAO"></label>
+    <label>ROMANEIO<input type="text" name="ROMANEIO"></label>
+    <label>REGISTRO_BD<input type="text" name="REGISTRO_BD" required></label>
+    <div class="message" id="message"></div>
+    <button type="button" id="addBtn">Adicionar à Lista</button>
+    <button type="button" id="sendAllBtn">Enviar Todos</button>
+  </form>
 
-  <div class="message" id="message"></div>
-  <button type="submit">Enviar Cadastro</button>
-</form>
+  <div class="table-container">
+    <table id="cadastroTable">
+      <thead>
+        <tr>
+          <th>PV</th><th>STD</th><th>FL.ORIGEM</th><th>FL.DESTINO</th><th>SKU</th><th>DESCRICAO</th>
+          <th>QTD</th><th>CARGA</th><th>STATUS</th><th>NOTA FISCAL</th><th>DATA NF</th>
+          <th>ILPN</th><th>DIVERGENCIA</th><th>TIPO_DIVERGENCIA</th><th>AJUSTE_ENTRADA</th>
+          <th>AJUSTE_SAIDA</th><th>SOLICITACAO</th><th>ROMANEIO</th><th>REGISTRO_BD</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
 const form = document.getElementById('estoqueForm');
 const messageDiv = document.getElementById('message');
+const tableBody = document.querySelector("#cadastroTable tbody");
+let registros = [];
+let editIndex = -1;
 
-form.addEventListener('submit', function(e){
-  e.preventDefault();
-  const formData = new FormData(form);
+function atualizarTabela() {
+  tableBody.innerHTML = "";
+  registros.forEach((r, i) => {
+    const row = document.createElement("tr");
+    for(const key of Object.keys(r)){
+      const td = document.createElement("td");
+      td.textContent = r[key];
+      row.appendChild(td);
+    }
+    const tdAction = document.createElement("td");
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Editar";
+    editBtn.className = "edit-btn";
+    editBtn.onclick = ()=> editarRegistro(i);
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "Excluir";
+    delBtn.className = "delete-btn";
+    delBtn.onclick = ()=> excluirRegistro(i);
+    tdAction.appendChild(editBtn);
+    tdAction.appendChild(delBtn);
+    row.appendChild(tdAction);
+    tableBody.appendChild(row);
+  });
+}
+
+function editarRegistro(index){
+  const r = registros[index];
+  for(const key in r){
+    form.elements[key].value = r[key];
+  }
+  editIndex = index;
+}
+
+function excluirRegistro(index){
+  registros.splice(index,1);
+  atualizarTabela();
+}
+
+document.getElementById("addBtn").addEventListener("click", ()=>{
+  const data = {};
+  let valid = true;
+  Array.from(form.elements).forEach(el=>{
+    if(el.name){
+      if(el.required && !el.value){
+        valid=false;
+      }
+      data[el.name] = el.value;
+    }
+  });
+  if(!valid){
+    messageDiv.textContent = "Preencha todos os campos obrigatórios!";
+    messageDiv.className = "message error";
+    return;
+  }
+
+  if(editIndex>=0){
+    registros[editIndex] = data;
+    editIndex=-1;
+  } else {
+    registros.push(data);
+  }
+  form.reset();
+  messageDiv.textContent = "Registro adicionado à lista!";
+  messageDiv.className = "message success";
+  atualizarTabela();
+});
+
+document.getElementById("sendAllBtn").addEventListener("click", ()=>{
+  if(registros.length===0){
+    messageDiv.textContent = "Não há registros para enviar!";
+    messageDiv.className = "message error";
+    return;
+  }
+
+  // Criar tabela HTML para enviar
+  let registrosHTML = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse;">`;
+  registrosHTML += `<tr>
+<th>PV</th><th>STD</th><th>FL.ORIGEM</th><th>FL.DESTINO</th><th>SKU</th><th>DESCRICAO</th>
+<th>QTD</th><th>CARGA</th><th>STATUS</th><th>NOTA FISCAL</th><th>DATA NF</th>
+<th>ILPN</th><th>DIVERGENCIA</th><th>TIPO_DA_DIVERGENCIA</th><th>AJUSTE_ENTRADA</th>
+<th>AJUSTE_SAIDA</th><th>SOLICITACAO</th><th>ROMANEIO</th><th>REGISTRO_BD</th>
+</tr>`;
+
+  registros.forEach(r=>{
+    registrosHTML += `<tr>`;
+    for(const key of ["PV","STD","FL_ORIGEM","FL_DESTINO","SKU","DESCRICAO","QTD","CARGA",
+                      "STATUS","NOTA_FISCAL","DATA_NF","ILPN","DIVERGENCIA","TIPO_DA_DIVERGENCIA",
+                      "AJUSTE_ENTRADA_NO_MHT","AJUSTE_SAIDA_NO_MHT","SOLICITACAO","ROMANEIO","REGISTRO_BD"]){
+      registrosHTML += `<td>${r[key] || ""}</td>`;
+    }
+    registrosHTML += `</tr>`;
+  });
+
+  registrosHTML += `</table>`;
+
+  const formData = new FormData();
+  formData.append("Registros", registrosHTML);
 
   fetch('https://formsubmit.co/ajax/triagemlinhabranca@gmail.com', {
     method: 'POST',
     body: formData
   })
-  .then(response => response.json())
-  .then(data => {
-    messageDiv.textContent = "Cadastro enviado com sucesso!";
+  .then(resp => resp.json())
+  .then(data=>{
+    messageDiv.textContent = "Todos os registros enviados com sucesso!";
     messageDiv.className = "message success";
-    form.reset();
+    registros = [];
+    atualizarTabela();
   })
-  .catch(err => {
-    messageDiv.textContent = "Erro ao enviar cadastro. Tente novamente.";
+  .catch(err=>{
+    messageDiv.textContent = "Erro ao enviar registros!";
     messageDiv.className = "message error";
   });
 });
 </script>
 </body>
 </html>
-
-
